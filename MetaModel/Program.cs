@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetaModel.Core;
+using System;
+using System.Linq;
 
 namespace MetaModel
 {
@@ -6,7 +8,21 @@ namespace MetaModel
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var repo = MetaModelRepository<StudentModel>.GetInstance();
+            var me = new StudentModel() {
+                CardNumber = 22,
+                Name = "@klesogor did whole stuff on his own, shame on you!"
+            };
+            repo.Save(new StudentModel() { CardNumber = 11, Name = "Fake like my existance" });
+            repo.Save(me);
+            
+            var all = repo.GetAll();
+
+            var item = all.ToList()[0];
+
+
+            Console.WriteLine("Saved successfully!");
+            Console.ReadLine();
         }
     }
 }
