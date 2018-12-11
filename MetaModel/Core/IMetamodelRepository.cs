@@ -13,5 +13,7 @@ namespace MetaModel.Core
         T GetById(Guid id);
 
         void Save(T entity);
+
+        void Delete(T entity);
     }
 }
