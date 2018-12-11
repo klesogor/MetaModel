@@ -52,8 +52,11 @@ namespace MetaModel.Core
             //check if current repository type exists
             var type = _ensureTypeCreated();
             var obj = _context.Objects.Find(entity.Id);
-            if (!(obj is null)) _saveExisting(entity, obj);
-            _saveNew(entity,type);
+            if (obj != null) {
+                _saveExisting(entity, obj);
+            } else { 
+                _saveNew(entity,type);
+            }
         }
 
         private Entities.Type _ensureTypeCreated()
@@ -112,6 +115,7 @@ namespace MetaModel.Core
 
         private T _loadObject(Entities.Object obj)
         {
+            if (obj is null) return null;
             var entity = Activator.CreateInstance<T>();
             entity.Id = obj.Id;
             foreach (var val in obj.Values)
@@ -120,6 +124,13 @@ namespace MetaModel.Core
                 prop.SetValue(entity,Converter.ObjectFromString(prop.PropertyType, val.Data));
             }
             return entity;
+        }
+
+        public void Delete(T entity)
+        {
+            var found = _context.Objects.Single(x => x.Id == entity.Id);
+            _context.Remove(found);
+            _context.SaveChanges();
         }
     }
 }

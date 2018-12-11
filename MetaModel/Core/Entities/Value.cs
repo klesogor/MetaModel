@@ -7,6 +7,7 @@ namespace MetaModel.Core.Entities
 {
     public class Value: Base
     {
+        [Required]
         public string Data { get; set; }
 
         [Required]
